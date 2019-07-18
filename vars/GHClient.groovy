@@ -1,5 +1,5 @@
 
-import org.fourhent.FirstTest
+import org.fourneth.FirstTest
 
 def hello() { 
     echo "In: to Hello world"

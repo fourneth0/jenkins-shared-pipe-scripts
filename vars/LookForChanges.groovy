@@ -5,7 +5,7 @@ import groovy.transform.Field
 void call(Map parameters = [:], Closure body = null) {
     echo "Running step name ${STEP_NAME}"
 //    echo  params
-//    withCredentials([usernamePassword(credentialId: 'username-password-id1', passwordVariable: 'pwd', usernameVariable: 'username')]) {
-//        echo username
-//    }
+    withCredentials([usernamePassword(credentialId: 'username-password-id1', passwordVariable: 'pwd', usernameVariable: 'username')]) {
+        echo username
+    }
 }

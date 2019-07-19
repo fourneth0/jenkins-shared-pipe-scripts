@@ -1,3 +1,5 @@
+import groovy.transform.Field
+
 @Field String STEP_NAME = getClass().getName()
 
 void call(Map parameters = [:], Closure body = null) {

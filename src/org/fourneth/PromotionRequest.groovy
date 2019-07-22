@@ -28,13 +28,13 @@ class PromotionRequest {
 
     PromotionRequest (org, repo, source, target, accessToken, approveToken) {
         println('creating the client')
-        this.client = GitHub.connectUsingOAuth(accessToken)
-        this.organization = this.client.getOrganization(org)
-        this.repository = this.organization.getRepository(repo)
-        this.source = this.repository.getBranch(source)
-        this.target = this.repository.getBranch(target)
-        this.accessToken = accessToken
-        this.approveToken = approveToken
+//        this.client = GitHub.connectUsingOAuth(accessToken)
+//        this.organization = this.client.getOrganization(org)
+//        this.repository = this.organization.getRepository(repo)
+//        this.source = this.repository.getBranch(source)
+//        this.target = this.repository.getBranch(target)
+//        this.accessToken = accessToken
+//        this.approveToken = approveToken
         println('client created')
     }
 

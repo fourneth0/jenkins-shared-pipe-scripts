@@ -16,7 +16,7 @@ def setup(Map parameters = [:]) {
             parameters.approveToken
 
     )
-    clientVersionApi = new ClientVersionAPI(url: parameters.versionURL, propertyName: parameters.versionPropertyName)
+    clientVersionApi = new ClientVersionApi(url: parameters.versionURL, propertyName: parameters.versionPropertyName)
 
 }
 

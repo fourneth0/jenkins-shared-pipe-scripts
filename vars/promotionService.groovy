@@ -1,6 +1,8 @@
-
+import groovy.transform.Field
 import org.fourneth.PromotionRequest
 import org.fourneth.ClientVersionApi
+
+@Field PromotionRequest  request
 
 
 def checking() {
@@ -50,6 +52,8 @@ def createPR(script, Map parameters = [:]) {
     } else {
         request.createPR()
     }
+
+    this.request = request
 }
 
 def approveAndMerge(Map parameters = [:]) {

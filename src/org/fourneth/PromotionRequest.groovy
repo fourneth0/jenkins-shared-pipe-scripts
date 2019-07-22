@@ -1,18 +1,15 @@
 package org.fourneth
 
-import com.sun.xml.internal.xsom.impl.scd.Iterators
 import org.kohsuke.github.GHBranch
 import org.kohsuke.github.GHCommitState
 import org.kohsuke.github.GHCommitStatus
 import org.kohsuke.github.GHCompare
 import org.kohsuke.github.GHOrganization
 import org.kohsuke.github.GHPullRequest
-import org.kohsuke.github.GHPullRequestReview
 import org.kohsuke.github.GHPullRequestReviewEvent
 import org.kohsuke.github.GHRepository
 import org.kohsuke.github.GHTagObject
 import org.kohsuke.github.GitHub
-import groovy.transform.Field
 
 class PromotionRequest {
 
@@ -158,10 +155,6 @@ class PromotionRequest {
     GHTagObject createTag(String name, String sha) {
         this.repository.createRef(name, sha)
         return this.repository.getTagObject(sha)
-    }
-
-    String getMergeCommitSha() {
-        this.pullRequest.mergeCommitSha
     }
 
 }

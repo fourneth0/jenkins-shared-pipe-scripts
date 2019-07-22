@@ -1,4 +1,4 @@
 
 def heelo() {
-    echo "Hello here"
+    println "Hello here"
 }

@@ -6,7 +6,13 @@ PromotionRequest request = null
 ClientVersionApi clientVersionApi = null
 
 
+def checking() {
+
+}
+
 def setup(Map parameters = [:]) {
+    echo parameters
+
     request = new PromotionRequest(
             parameters.org,
             parameters.repo,

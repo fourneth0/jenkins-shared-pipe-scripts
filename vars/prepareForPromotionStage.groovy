@@ -1,4 +1,4 @@
 
-void call(Map parameters = [:]) {
-    echo "Check for params ${parameters}"
+def heelo() {
+    echo "Hello here"
 }

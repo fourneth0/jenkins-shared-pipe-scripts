@@ -19,12 +19,12 @@ class PromotionRequest {
     private String accessToken
     private String approveToken
 
-    @Field private GitHub client
-    @Field private GHOrganization organization
-    @Field private GHRepository repository
-    @Field private GHBranch source
-    @Field private GHBranch target
-    @Field private GHPullRequest pullRequest
+    private GitHub client
+    private GHOrganization organization
+    private GHRepository repository
+    private GHBranch source
+    private GHBranch target
+    private GHPullRequest pullRequest
 
     PromotionRequest (String org, String repo, String source, String target, String accessToken, String approveToken) {
         println('creating the client')

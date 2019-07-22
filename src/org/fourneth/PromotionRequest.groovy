@@ -26,10 +26,12 @@ class PromotionRequest {
     private GHBranch target
     private GHPullRequest pullRequest
 
-    PromotionRequest (String org, String repo, String source, String target, String accessToken, String approveToken) {
-        println('creating the client')
-        println(accessToken)
+    PromotionRequest (script, String org, String repo, String source, String target, String accessToken, String approveToken) {
+        script.echo 'creating the client'
+        script.echo accessToken
         this.client = GitHub.connectUsingOAuth(accessToken)
+        script.echo this.client
+
         this.organization = this.client.getOrganization(org)
 //        this.repository = this.organization.getRepository(repo)
 //        this.source = this.repository.getBranch(source)

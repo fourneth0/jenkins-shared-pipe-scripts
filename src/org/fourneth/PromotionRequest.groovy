@@ -52,7 +52,7 @@ class PromotionRequest {
      * @return
      */
     boolean isRequiredToMerge() {
-        println this.repository
+        println this.repository.name
         println this.source.name
         println this.target.name
 

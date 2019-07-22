@@ -44,6 +44,8 @@ def createPR(Map parameters = [:]) {
     )
 
     echo 'creating PR'
+    println request
+    println request.isRequiredToMerge
 
     if (!request.isRequiredToMerge()) {
         echo 'No changed to be promoted from source to target'

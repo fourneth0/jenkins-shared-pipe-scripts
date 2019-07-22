@@ -78,7 +78,7 @@ class PromotionRequest {
      */
     PromotionRequest createPR(String body = "") {
         if (!this.isRequiredToMerge()) {
-            throw new IllegalStateException("${target.name} is upto date with ${source.name}");
+            throw new IllegalStateException("${target.name} is upto date with ${source.name}")
         }
 
         closeExistingPRs()
@@ -120,7 +120,7 @@ class PromotionRequest {
             throw new IllegalStateException('A PR should be raised before merging')
         }
         if (!isMergeable()) {
-            throw new IllegalStateException('PR is not mergeable');
+            throw new IllegalStateException('PR is not mergeable')
         }
         this.pullRequest.merge("Promote branch ${source.name} to ${target.name}", this.source.getSHA1())
         pullRequest.refresh()

@@ -64,7 +64,7 @@ pipeline {
 
         stage('Promote to target environment') {
             steps {
-                sh '''node -e "require('./ci/integrator.js').promoteBranch()" '''
+                sh '''node -e "require('./ci/integrator.js').promotionService()" '''
             }
         }
         stage('Wait for deployment to complete') {

@@ -1,5 +1,6 @@
 
 import org.fourneth.PromotionRequest
+import org.fourneth.ClientVersionApi
 
 PromotionRequest request = null
 ClientVersionApi clientVersionApi = null

@@ -30,12 +30,12 @@ class PromotionRequest {
         println('creating the client')
         println(accessToken)
         this.client = GitHub.connectUsingOAuth(accessToken)
-//        this.organization = this.client.getOrganization(org)
-//        this.repository = this.organization.getRepository(repo)
-//        this.source = this.repository.getBranch(source)
-//        this.target = this.repository.getBranch(target)
-//        this.accessToken = accessToken
-//        this.approveToken = approveToken
+        this.organization = this.client.getOrganization(org)
+        this.repository = this.organization.getRepository(repo)
+        this.source = this.repository.getBranch(source)
+        this.target = this.repository.getBranch(target)
+        this.accessToken = accessToken
+        this.approveToken = approveToken
         println('client created')
     }
 
@@ -52,14 +52,9 @@ class PromotionRequest {
      * @return
      */
     boolean isRequiredToMerge() {
-        return true
-//        println this.repository.name
-//        println this.source.name
-//        println this.target.name
-//
-//        def comparison = this.repository.getCompare(this.source.name, this.target.name)
-//        return (comparison.status != GHCompare.Status.identical
-//            && comparison.status != GHCompare.Status.ahead)
+        def comparison = this.repository.getCompare(this.source.name, this.target.name)
+        return (comparison.status != GHCompare.Status.identical
+            && comparison.status != GHCompare.Status.ahead)
     }
 
     /**

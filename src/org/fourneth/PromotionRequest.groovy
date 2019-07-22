@@ -177,29 +177,4 @@ class PromotionRequest {
         this.pullRequest.mergeCommitSha
     }
 
-    // Read only properties
-    GitHub getClient() {
-        return this.client
-    }
-
-    GHOrganization getOrganization() {
-        return organization
-    }
-
-    GHRepository getRepository() {
-        return this.repository
-    }
-
-    GHBranch getSource() {
-        return source
-    }
-
-    GHBranch getTarget() {
-        return target
-    }
-
-    GHPullRequest getPullRequest() {
-        return pullRequest
-    }
-
 }

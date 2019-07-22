@@ -52,7 +52,7 @@ class PromotionRequest {
      * @return
      */
     boolean isRequiredToMerge() {
-        def comparison = repository.getCompare(source.name, target.name)
+        def comparison = repository.getCompare(this.source.name, this.target.name)
         return (comparison.status != GHCompare.Status.identical
             && comparison.status != GHCompare.Status.ahead)
     }

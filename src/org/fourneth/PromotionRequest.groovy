@@ -27,6 +27,7 @@ class PromotionRequest {
     private GHPullRequestReview review
 
     PromotionRequest (org, repo, source, target, accessToken, approveToken) {
+        println('creating the client')
         this.client = GitHub.connectUsingOAuth(accessToken)
         this.organization = this.client.getOrganization(org)
         this.repository = this.organization.getRepository(repo)
@@ -34,6 +35,7 @@ class PromotionRequest {
         this.target = this.repository.getBranch(target)
         this.accessToken = accessToken
         this.approveToken = approveToken
+        println('client created')
     }
 
     PromotionRequest reset() {

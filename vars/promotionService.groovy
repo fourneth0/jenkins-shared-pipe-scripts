@@ -11,7 +11,6 @@ def checking() {
 }
 
 def setup(Map parameters = [:]) {
-    println parameters
 
     request = new PromotionRequest(
             parameters.org,
@@ -22,7 +21,7 @@ def setup(Map parameters = [:]) {
             parameters.approveToken
 
     )
-    clientVersionApi = new ClientVersionApi(url: parameters.versionURL, propertyName: parameters.versionPropertyName)
+    this.clientVersionApi = new ClientVersionApi(url: parameters.versionURL, propertyName: parameters.versionPropertyName)
 
 }
 

@@ -24,7 +24,8 @@ def setup(Map parameters = [:]) {
             parameters.approveToken
 
     )
-    println "Request created ${lrequest}";
+    println "Request created ${lrequest.pullRequest}";
+    this.request = lrequest.pullRequest
 //    println localRequest
 //    this.request = localRequest
 //    this.clientVersionApi = new ClientVersionApi(url: parameters.versionURL, propertyName: parameters.versionPropertyName)

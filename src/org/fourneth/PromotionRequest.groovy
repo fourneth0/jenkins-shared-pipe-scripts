@@ -34,11 +34,11 @@ class PromotionRequest {
 
         script.echo "${org} ${repo}"
         this.organization = this.client.getOrganization(org)
-//        this.repository = this.organization.getRepository(repo)
-//        this.source = this.repository.getBranch(source)
-//        this.target = this.repository.getBranch(target)
-//        this.accessToken = accessToken
-//        this.approveToken = approveToken
+        this.repository = this.organization.getRepository(repo)
+        this.source = this.repository.getBranch(source)
+        this.target = this.repository.getBranch(target)
+        this.accessToken = accessToken
+        this.approveToken = approveToken
         println('client created')
     }
 

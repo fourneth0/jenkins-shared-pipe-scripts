@@ -12,7 +12,7 @@ def checking() {
 
 def setup(Map parameters = [:]) {
 
-    request = new PromotionRequest(
+    def localRequest = new PromotionRequest(
             parameters.org,
             parameters.repo,
             parameters.source,
@@ -21,7 +21,9 @@ def setup(Map parameters = [:]) {
             parameters.approveToken
 
     )
-    this.clientVersionApi = new ClientVersionApi(url: parameters.versionURL, propertyName: parameters.versionPropertyName)
+    println localRequest
+    this.request = localRequest
+//    this.clientVersionApi = new ClientVersionApi(url: parameters.versionURL, propertyName: parameters.versionPropertyName)
 
 }
 

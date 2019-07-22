@@ -12,6 +12,9 @@ def checking() {
 
 def setup(Map parameters = [:]) {
 
+    println parameters
+
+    println "gonna create request ${PromotionRequest}"
     def localRequest = new PromotionRequest(
             parameters.org,
             parameters.repo,
@@ -21,8 +24,9 @@ def setup(Map parameters = [:]) {
             parameters.approveToken
 
     )
-    println localRequest
-    this.request = localRequest
+    println "Request created ${localRequest}";
+//    println localRequest
+//    this.request = localRequest
 //    this.clientVersionApi = new ClientVersionApi(url: parameters.versionURL, propertyName: parameters.versionPropertyName)
 
 }

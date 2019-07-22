@@ -1,64 +1,79 @@
 package org.fourneth
 
-import org.fourneth.PromoteTestUtil
-import org.kohsuke.github.GHIssueState
+import org.kohsuke.github.GHCommitState
+import org.kohsuke.github.GHCommitStatus
+import org.kohsuke.github.PagedIterable
+
+import static org.mockito.Mockito.*;
 import spock.lang.Specification
 
 class PromotionRequestTest extends Specification {
 
-    def env = System.getenv()
+    def mockedRequest = mock(PromotionRequest.class)
 
-    def promotionRequest = new PromotionRequest(
-            "fourneth0",
-            "tryjenpipe",
-            "develop",
-            "staging",
-            env['ACCESS_TOKEN'],
-            "rt")
-    def util = new PromoteTestUtil(promotionRequest: promotionRequest)
-
-    def "isRequiredToMerge, when there are changes"() {
-        when:
-            util.createASampleCommit('first commit')
-            promotionRequest.reset()
-        then:
-            promotionRequest.isRequiredToMerge()
-    }
-
-    def "create promotion pr"() {
+    def "test the build status, when no status available"() {
         setup:
-            util.closeExistingPRs()
-            util.createDuplicatePR()
-        when:
-            promotionRequest.createPR("Promotion PR")
-        then:
-            promotionRequest.pullRequest != null
-            promotionRequest.pullRequest.base.sha == promotionRequest.target.getSHA1()
-            promotionRequest.pullRequest.head.sha == promotionRequest.source.getSHA1()
+            when(mockedRequest.listBuildStatuses()).thenReturn([])
+            when(mockedRequest.hasAllStatusPassed()).thenCallRealMethod()
+        expect:
+            !mockedRequest.hasAllStatusPassed()
     }
 
-    def "approve"() {
-        when:
-            promotionRequest.createPR("Verify approvability")
-            promotionRequest.approve(env['APPROVE_TOKEN'])
-        then:
-            promotionRequest.pullRequest.listReviews().size() == 1
-            promotionRequest.pullRequest.state == GHIssueState.OPEN
-            promotionRequest.mergeable
-    }
-
-    def "merge pr"() {
+    def "When status is pending"(){
         setup:
-            util.closeExistingPRs()
-            util.createDuplicatePR()
-            promotionRequest.createPR("verify merge")
-            promotionRequest.approve("057af90bbe5ed0a59bf639c27a2e1df89cc3d040")
-            util.waitTillMergeable()
-        when:
-            promotionRequest.merge()
-        then:
-            promotionRequest.target.getSHA1() == promotionRequest.pullRequest.mergeCommitSha
-            promotionRequest.pullRequest.state == GHIssueState.CLOSED
+            def status = mockCommitStatus('context1', GHCommitState.PENDING);
+            when(mockedRequest.listBuildStatuses()).thenReturn([ status ])
+            when(mockedRequest.hasAllStatusPassed()).thenCallRealMethod()
+        expect:
+            !mockedRequest.hasAllStatusPassed()
+    }
+
+    def "When status is success"(){
+        setup:
+            def status = mockCommitStatus('context1', GHCommitState.SUCCESS);
+            when(mockedRequest.listBuildStatuses()).thenReturn([ status ])
+            when(mockedRequest.hasAllStatusPassed()).thenCallRealMethod()
+        expect:
+            mockedRequest.hasAllStatusPassed()
+    }
+
+    def "When status is success with multiple status "(){
+        setup:
+            def context1Success = mockCommitStatus('context1', GHCommitState.SUCCESS)
+            def context2Success = mockCommitStatus('context2', GHCommitState.SUCCESS)
+            def context1Pending = mockCommitStatus('context1', GHCommitState.PENDING)
+            def context2Pending = mockCommitStatus('context2', GHCommitState.PENDING)
+            when(mockedRequest.listBuildStatuses()).thenReturn([
+                    context1Success,
+                    context2Success,
+                    context1Pending,
+                    context2Pending
+            ])
+            when(mockedRequest.hasAllStatusPassed()).thenCallRealMethod()
+        expect:
+            mockedRequest.hasAllStatusPassed()
+    }
+
+    def "When status is mixed with multiple status "(){
+        setup:
+            def context1Success = mockCommitStatus('context1', GHCommitState.SUCCESS)
+            def context1Pending = mockCommitStatus('context1', GHCommitState.PENDING)
+            def context2Pending = mockCommitStatus('context2', GHCommitState.PENDING)
+            when(mockedRequest.listBuildStatuses()).thenReturn([
+                        context1Success,
+                        context1Pending,
+                        context2Pending
+            ])
+            when(mockedRequest.hasAllStatusPassed()).thenCallRealMethod()
+        expect:
+            !mockedRequest.hasAllStatusPassed()
+    }
+
+    private def mockCommitStatus(String name, GHCommitState state) {
+        def commitStatus = mock(GHCommitStatus)
+        when(commitStatus.state).thenReturn(state)
+        when(commitStatus.context).thenReturn(name)
+        return commitStatus
     }
 
 }

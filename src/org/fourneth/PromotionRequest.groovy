@@ -1,7 +1,9 @@
 package org.fourneth
 
+import com.sun.xml.internal.xsom.impl.scd.Iterators
 import org.kohsuke.github.GHBranch
 import org.kohsuke.github.GHCommitState
+import org.kohsuke.github.GHCommitStatus
 import org.kohsuke.github.GHCompare
 import org.kohsuke.github.GHOrganization
 import org.kohsuke.github.GHPullRequest
@@ -98,7 +100,7 @@ class PromotionRequest {
      * @param message
      * @return
      */
-    PromotionRequest approve(String approveToken, String message = "Approve request for auto-promotion") {
+    PromotionRequest approve(String message = "Approve request for auto-promotion") {
         if (!this.pullRequest) {
             throw new IllegalStateException('Pull request should be created before approving')
         }
@@ -116,33 +118,47 @@ class PromotionRequest {
     }
 
     PromotionRequest merge() {
-        if (!this.pullRequest) {
-            throw new IllegalStateException('A PR should be raised before merging')
-        }
-        if (!isMergeable()) {
-            throw new IllegalStateException('PR is not mergeable')
-        }
+        assert this.pullRequest
         this.pullRequest.merge("Promote branch ${source.name} to ${target.name}", this.source.getSHA1())
         pullRequest.refresh()
-        target = repository.getBranch(this.target.name)
+        refreshTarget()
         return this
     }
 
+    /**
+     * Check whether all reported state against the PR head is completed.
+     * This will return `false` even if there isn't any build status against the PR.
+     * @return
+     */
     boolean hasAllStatusPassed() {
-        def commitStatuses = repository.listCommitStatuses(this.source.getSHA1())
+        def commitStatuses = listBuildStatuses()
         if (commitStatuses.isEmpty()) {
             return false
         }
-        Set uniqueStatuses = []
-        def allPassed = true
-        for (s in commitStatuses) {
-            if (uniqueStatuses.contains(s.context)) {
-                continue
-            }
-            uniqueStatuses.add(s.context)
-            allPassed = allPassed && s.state == GHCommitState.SUCCESS
+        def latestStatuses = getLatestCommitStatus(commitStatuses)
+        return latestStatuses.every { GHCommitStatus item ->
+            item.state == GHCommitState.SUCCESS
         }
-        return allPassed
+    }
+
+    Iterable<GHCommitStatus> listBuildStatuses() {
+        return repository.listCommitStatuses(this.source.getSHA1())
+    }
+
+    private Iterable<GHCommitStatus> getLatestCommitStatus(Iterable<GHCommitStatus> commitStatuses) {
+        Set uniqueStatuses = []
+        return commitStatuses.findAll { item ->
+            if (uniqueStatuses.contains(item.context)) {
+                return false
+            } else {
+                uniqueStatuses.add(item.context)
+                return true
+            }
+        }
+    }
+
+    private def refreshTarget() {
+        target = repository.getBranch(this.target.name)
     }
 
     GHTagObject createTag(String name, String sha) {
@@ -153,12 +169,6 @@ class PromotionRequest {
     String getMergeCommitSha() {
         this.pullRequest.mergeCommitSha
     }
-
-    boolean isMergeable() {
-        pullRequest.refresh()
-        return pullRequest.mergeable
-    }
-
 
     // Read only properties
     GitHub getClient() {

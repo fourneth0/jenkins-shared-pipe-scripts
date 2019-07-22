@@ -1,4 +1,4 @@
-package groovy.org.fourneth
+package org.fourneth.util
 
 import org.fourneth.PromotionRequest
 import org.kohsuke.github.GHCommit

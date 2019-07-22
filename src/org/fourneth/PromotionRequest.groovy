@@ -26,7 +26,7 @@ class PromotionRequest {
     private GHPullRequest pullRequest
     private GHPullRequestReview review
 
-    PromotionRequest (org, repo, source, target, accessToken, approveToken) {
+    PromotionRequest (String org, String repo, String source, String target, String accessToken, String approveToken) {
         println('creating the client')
         println(accessToken)
         this.client = GitHub.connectUsingOAuth(accessToken)

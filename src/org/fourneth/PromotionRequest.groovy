@@ -52,8 +52,8 @@ class PromotionRequest {
      * @return
      */
     boolean isRequiredToMerge() {
-        println this
-        println this.repository
+        echo this
+        echo  this.repository
         return false
 //        println this.repository.name
 //        println this.source.name

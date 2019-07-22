@@ -30,7 +30,7 @@ class PromotionRequest {
         script.echo 'creating the client'
         script.echo accessToken
         this.client = GitHub.connectUsingOAuth(accessToken)
-        script.echo this.client
+        script.echo this.client == null
 
         this.organization = this.client.getOrganization(org)
 //        this.repository = this.organization.getRepository(repo)

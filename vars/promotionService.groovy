@@ -47,7 +47,7 @@ def createPR(Map parameters = [:]) {
     println request
     println request.requiredToMerge
 
-    if (!request.requiredToMerge()) {
+    if (!request.requiredToMerge) {
         echo 'No changed to be promoted from source to target'
         currentBuild.result = 'UNSTABLE'
     } else {

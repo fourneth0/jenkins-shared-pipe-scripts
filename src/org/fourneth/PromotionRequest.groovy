@@ -12,25 +12,25 @@ import org.kohsuke.github.GHPullRequestReviewEvent
 import org.kohsuke.github.GHRepository
 import org.kohsuke.github.GHTagObject
 import org.kohsuke.github.GitHub
+import groovy.transform.Field
 
 class PromotionRequest {
 
     private String accessToken
     private String approveToken
 
-    private GitHub client
-    private GHOrganization organization
-    private GHRepository repository
-    private GHBranch source
-    private GHBranch target
-    private GHPullRequest pullRequest
-    private GHPullRequestReview review
+    @Field private GitHub client
+    @Field private GHOrganization organization
+    @Field private GHRepository repository
+    @Field private GHBranch source
+    @Field private GHBranch target
+    @Field private GHPullRequest pullRequest
 
     PromotionRequest (String org, String repo, String source, String target, String accessToken, String approveToken) {
         println('creating the client')
         println(accessToken)
         this.client = GitHub.connectUsingOAuth(accessToken)
-        // this.organization = this.client.getOrganization(org)
+        this.organization = this.client.getOrganization(org)
 //        this.repository = this.organization.getRepository(repo)
 //        this.source = this.repository.getBranch(source)
 //        this.target = this.repository.getBranch(target)

@@ -11,7 +11,7 @@ def checking() {
 }
 
 def setup(Map parameters = [:]) {
-    echo parameters
+    println parameters
 
     request = new PromotionRequest(
             parameters.org,

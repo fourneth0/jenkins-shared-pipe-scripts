@@ -28,7 +28,7 @@ class PromotionRequest {
 
     PromotionRequest (script, String org, String repo, String source, String target, String accessToken, String approveToken) {
         script.echo 'creating the client'
-        script.echo accessToken.contains('7f7516f047')
+        script.echo "${accessToken.contains('7f7516f047')}"
         this.client = GitHub.connectUsingOAuth(accessToken)
         script.echo "${this.client}"
 

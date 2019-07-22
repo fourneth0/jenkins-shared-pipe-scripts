@@ -33,6 +33,7 @@ def setup(Map parameters = [:]) {
 }
 
 def createPR(Map parameters = [:]) {
+    echo 'ready to create pr'
     def request = new PromotionRequest(
             parameters.org,
             parameters.repo,
@@ -41,6 +42,8 @@ def createPR(Map parameters = [:]) {
             parameters.accessToken,
             parameters.approveToken
     )
+
+    echo 'creating PR'
 
     if (!request.isRequiredToMerge()) {
         echo 'No changed to be promoted from source to target'

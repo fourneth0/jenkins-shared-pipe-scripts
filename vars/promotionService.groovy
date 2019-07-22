@@ -15,7 +15,7 @@ def setup(Map parameters = [:]) {
     println parameters
 
     println "gonna create request ${PromotionRequest}"
-    def localRequest = new PromotionRequest(
+    request = new PromotionRequest(
             parameters.org,
             parameters.repo,
             parameters.source,
@@ -24,7 +24,7 @@ def setup(Map parameters = [:]) {
             parameters.approveToken
 
     )
-    println "Request created ${localRequest}";
+    println "Request created ${request}";
 //    println localRequest
 //    this.request = localRequest
 //    this.clientVersionApi = new ClientVersionApi(url: parameters.versionURL, propertyName: parameters.versionPropertyName)

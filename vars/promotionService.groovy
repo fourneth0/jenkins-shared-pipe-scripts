@@ -32,7 +32,6 @@ def setup(Map parameters = [:]) {
 def createPR(script, Map parameters = [:]) {
     echo 'ready to create pr'
     def request = new PromotionRequest(
-            script,
             parameters.org,
             parameters.repo,
             parameters.source,

@@ -21,7 +21,6 @@ class PromotionRequestIntegrationTest extends Specification {
     def "isRequiredToMerge, when there are changes"() {
         when:
             util.createASampleCommit('first commit')
-            promotionRequest.reset()
         then:
             promotionRequest.isRequiredToMerge()
     }
@@ -45,7 +44,6 @@ class PromotionRequestIntegrationTest extends Specification {
         then:
             promotionRequest.pullRequest.listReviews().size() == 1
             promotionRequest.pullRequest.state == GHIssueState.OPEN
-            promotionRequest.mergeable
     }
 
     def "merge pr"() {

@@ -26,13 +26,9 @@ class PromotionRequest {
     private GHBranch target
     private GHPullRequest pullRequest
 
-    PromotionRequest (script, String org, String repo, String source, String target, String accessToken, String approveToken) {
-        script.echo 'creating the client'
-        script.echo "${accessToken.contains('7f7516f047')}"
+    PromotionRequest (String org, String repo, String source, String target, String accessToken, String approveToken) {
         this.client = GitHub.connectUsingOAuth(accessToken)
-        script.echo "${this.client}"
 
-        script.echo "${org} ${repo}"
         this.organization = this.client.getOrganization(org)
         this.repository = this.organization.getRepository(repo)
         this.source = this.repository.getBranch(source)
@@ -40,14 +36,6 @@ class PromotionRequest {
         this.accessToken = accessToken
         this.approveToken = approveToken
         println('client created')
-    }
-
-    PromotionRequest reset() {
-        this.source = this.repository.getBranch(this.source.name)
-        this.target = this.repository.getBranch(this.target.name)
-        this.pullRequest = null
-        this.review = null
-        return this
     }
 
     /**
@@ -115,7 +103,7 @@ class PromotionRequest {
                 .getRepository(this.repository.name)
                 .getPullRequest(this.pullRequest.number)
 
-        this.review = pr.createReview()
+        pr.createReview()
             .body(message)
             .event(GHPullRequestReviewEvent.APPROVE)
             .create()

@@ -140,7 +140,7 @@ class PromotionRequest {
                 .base(target.name)
                 .head(source.name)
                 .list()
-        if (prs.isEmpty()) {
+        if (prs.size() == 0) {
             throw new IllegalStateException("Couldn't find a pr from ${source.name} to ${target.name} ")
         }
         return prs.first()

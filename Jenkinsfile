@@ -15,7 +15,7 @@ pipeline {
         }
         stage('Run integration tests') {
             steps {
-                sh 'gradle test -Dtest.profile=integration'
+                sh 'gradle test -Dtest.profile=integration -i'
             }
         }
     }

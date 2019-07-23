@@ -4,7 +4,7 @@ pipeline {
 
     environment {
         ACCESS_TOKEN = credentials('git-access-token')
-        ACCESS_TOKEN = credentials('git-pr-review-token')
+        APPROVE_TOKEN = credentials('git-pr-review-token')
     }
 
     tools {gradle "gradle"}

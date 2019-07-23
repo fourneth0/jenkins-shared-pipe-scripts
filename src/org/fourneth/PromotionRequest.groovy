@@ -30,9 +30,9 @@ class PromotionRequest {
         this.client = GitHub.connectUsingOAuth(config.accessToken)
 //
         this.organization = this.client.getOrganization(config.organization)
-//        this.repository = this.organization.getRepository(config.repository)
-//        this.source = this.repository.getBranch(config.source)
-//        this.target = this.repository.getBranch(config.target)
+        this.repository = this.organization.getRepository(config.repository)
+        this.source = this.repository.getBranch(config.source)
+        this.target = this.repository.getBranch(config.target)
     }
 
     /**

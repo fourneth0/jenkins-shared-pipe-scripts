@@ -1,15 +1,14 @@
 import org.fourneth.*
 
 void call(script, Map parameters = [:]) {
-    def request = new PromotionRequest(script.promotionConfig.config)
-
-    request.approve()
+    new PromotionRequest(script.promotionConfig.config).approve()
 
     def timeoutInMin = parameters.timeout ? parameters.timeout : 10
     timeout(time: timeoutInMin, unit: 'MINUTES') {
         waitUntil hasAllStatusPassed(script.promotionConfig.config)
     }
-    request.merge()
+    new PromotionRequest(script.promotionConfig.config).merge()
+
 }
 
 def hasAllStatusPassed(config) {

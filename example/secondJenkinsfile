@@ -11,8 +11,6 @@ pipeline {
                                            target: 'staging',
                                            accessTokenId: 'git-access-token',
                                            approveTokenId: 'git-pr-review-token',
-                                           versionURL: 'https://shopping-mobile-bff-stag.cloud.sysco.com/health',
-                                           versionPropertyName: 'hash',
                     ])
                 }
 
@@ -26,6 +24,11 @@ pipeline {
         stage('Approve & Merge PR') {
             steps {
                 approveAndMerge(this)
+            }
+        }
+        stage('Is version deployed') {
+            steps {
+                waitTillApiDeployed(this, [versionURL: 'https://jsonplaceholder.typicode.com/todos/1', ])
             }
         }
 

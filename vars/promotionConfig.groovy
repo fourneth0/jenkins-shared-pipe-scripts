@@ -15,6 +15,7 @@ def init(Map params = [:]) {
                         source:       params.source,
                         target:       params.target
                 )
+                config.validate()
             }
         }
     }

@@ -6,7 +6,7 @@ def call(script, parameters = [:]) {
     def timeoutInMin = parameters.timeout ? parameters.timeout : 10
     timeout(time: timeoutInMin, unit: 'MINUTES') {
         waitUntil {
-            isThisVersionDeployed(script.promotionConfig.config)
+            isThisVersionDeployed(script.promotionConfig.config, sourceVersion)
         }
     }
 }

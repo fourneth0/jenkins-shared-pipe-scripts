@@ -12,5 +12,5 @@ void call(script, Map parameters = [:]) {
 }
 
 def hasAllStatusPassed(config) {
-    return new PromotionRequest(script.promotionConfig.config).hasAllStatusPassed()
+    return new PromotionRequest(config).hasAllStatusPassed()
 }

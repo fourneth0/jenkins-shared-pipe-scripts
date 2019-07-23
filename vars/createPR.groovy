@@ -1,7 +1,7 @@
 import org.fourneth.*
 
 void call(script) {
-    echo "Starting to create PR"
+    echo "Starting to create PR ${script.promotionConfig.config}"
     def request = new PromotionRequest(script.promotionConfig.config)
     request.createPR()
     echo "PR Created"

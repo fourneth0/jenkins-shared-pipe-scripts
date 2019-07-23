@@ -5,7 +5,9 @@ void call(script, Map parameters = [:]) {
 
     def timeoutInMin = parameters.timeout ? parameters.timeout : 10
     timeout(time: timeoutInMin, unit: 'MINUTES') {
-        waitUntil hasAllStatusPassed(script.promotionConfig.config)
+        waitUntil {
+            hasAllStatusPassed(script.promotionConfig.config)
+        }
     }
     new PromotionRequest(script.promotionConfig.config).merge()
 

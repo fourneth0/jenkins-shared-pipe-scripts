@@ -6,11 +6,11 @@ def call(script, parameters = [:]) {
     def timeoutInMin = parameters.timeout ? parameters.timeout : 10
     timeout(time: timeoutInMin, unit: 'MINUTES') {
         waitUntil {
-            isThisVersionDeployed(script.promotionConfig.config, sourceVersion)
+            isThisVersionDeployed(parameters, sourceVersion)
         }
     }
 }
 
-def isThisVersionDeployed(config, sourceVersion) {
-    return new ClientVersionApi(url: config.versionURL).isThisVersionDeployed(sourceVersion)
+def isThisVersionDeployed(parameters, sourceVersion) {
+    return new ClientVersionApi(url: parameters.versionURL).isThisVersionDeployed(sourceVersion)
 }

@@ -14,5 +14,6 @@ void call(script, Map parameters = [:]) {
 }
 
 def hasAllStatusPassed(config) {
+    sleep(time: 30, unit: 'SECONDS') // wait a bit before querying API
     return new PromotionRequest(config).hasAllStatusPassed()
 }

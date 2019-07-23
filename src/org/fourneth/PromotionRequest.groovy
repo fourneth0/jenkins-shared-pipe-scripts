@@ -13,8 +13,7 @@ import org.kohsuke.github.GitHub
 
 class PromotionRequest {
 
-    private String accessToken
-    private String approveToken
+    private PromotionRequestConfig config
 
     private GitHub client
     private GHOrganization organization
@@ -23,16 +22,16 @@ class PromotionRequest {
     private GHBranch target
     private GHPullRequest pullRequest
 
-    PromotionRequest (String org, String repo, String source, String target, String accessToken, String approveToken) {
-        this.client = GitHub.connectUsingOAuth(accessToken)
+    PromotionRequest (PromotionRequestConfig config) {
+        assert config
+        assert config.validate()
+        this.config = config
+        this.client = GitHub.connectUsingOAuth(config.accessToken)
 
-        this.organization = this.client.getOrganization(org)
-        this.repository = this.organization.getRepository(repo)
-        this.source = this.repository.getBranch(source)
-        this.target = this.repository.getBranch(target)
-        this.accessToken = accessToken
-        this.approveToken = approveToken
-        println('client created')
+        this.organization = this.client.getOrganization(config.organization)
+        this.repository = this.organization.getRepository(config.repository)
+        this.source = this.repository.getBranch(config.source)
+        this.target = this.repository.getBranch(config.target)
     }
 
     /**
@@ -61,7 +60,6 @@ class PromotionRequest {
         }
         return this
     }
-
 
     /**
      * Create PR from source to target. Add given body content to the PR.
@@ -92,10 +90,11 @@ class PromotionRequest {
      * @return
      */
     PromotionRequest approve(String message = "Approve request for auto-promotion") {
+        this.pullRequest = findPullRequest()
         if (!this.pullRequest) {
             throw new IllegalStateException('Pull request should be created before approving')
         }
-        GHPullRequest pr = GitHub.connectUsingOAuth(approveToken)
+        GHPullRequest pr = GitHub.connectUsingOAuth(this.config.approveToken)
                 .getOrganization(this.repository.ownerName)
                 .getRepository(this.repository.name)
                 .getPullRequest(this.pullRequest.number)
@@ -108,8 +107,19 @@ class PromotionRequest {
         return this
     }
 
+    def findPullRequest() {
+        def prs = repository.queryPullRequests()
+            .base(target.name)
+            .head(source.name)
+            .list()
+        if (prs.isEmpty()) {
+            throw new IllegalStateException("Couldn't find a pr from ${source.name} to ${target.name} ")
+        }
+        return prs.first()
+    }
+
     PromotionRequest merge() {
-        assert this.pullRequest
+        this.pullRequest = findPullRequest()
         this.pullRequest.merge("Promote branch ${source.name} to ${target.name}", this.source.getSHA1())
         pullRequest.refresh()
         refreshTarget()

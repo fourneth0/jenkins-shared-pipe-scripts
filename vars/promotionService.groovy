@@ -11,23 +11,15 @@ def checking() {
 
 def setup(Map parameters = [:]) {
 
-    println parameters
-
-    println "gonna create request ${PromotionRequest}"
-    def lrequest = new PromotionRequest(
+    def request = new PromotionRequest(
             parameters.org,
             parameters.repo,
             parameters.source,
             parameters.target,
             parameters.accessToken,
             parameters.approveToken
-
     )
-    println "Request created ${lrequest.pullRequest}";
-    this.request = lrequest
-//    println localRequest
-//    this.request = localRequest
-//    this.clientVersionApi = new ClientVersionApi(url: parameters.versionURL, propertyName: parameters.versionPropertyName)
+
 
 }
 

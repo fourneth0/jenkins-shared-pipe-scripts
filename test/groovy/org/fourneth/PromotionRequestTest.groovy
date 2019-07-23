@@ -2,12 +2,25 @@ package org.fourneth
 
 import org.kohsuke.github.GHCommitState
 import org.kohsuke.github.GHCommitStatus
-import org.kohsuke.github.PagedIterable
-
-import static org.mockito.Mockito.*;
 import spock.lang.Specification
+import org.codehaus.groovy.runtime.powerassert.PowerAssertionError
+import spock.lang.Unroll
 
-class PromotionRequestTest extends Specification {
+import static org.mockito.Mockito.*
+
+@Unroll
+class PromotionRequestConstructionTest extends Specification {
+    def "Create with invalid config"() {
+        when:
+            new PromotionRequest(config)
+        then:
+            thrown(PowerAssertionError.class)
+        where:
+            config << [null, new PromotionRequestConfig(source: "s")]
+    }
+}
+
+class HasAllStatusPassedTest extends Specification {
 
     def mockedRequest = mock(PromotionRequest.class)
 

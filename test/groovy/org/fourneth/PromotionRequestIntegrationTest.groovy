@@ -18,6 +18,12 @@ class PromotionRequestIntegrationTest extends Specification {
 
     def util = new PromoteTestUtil(promotionRequest: promotionRequest)
 
+    def "Missing required params"() {
+        when:
+            new PromotionRequest()
+        then:
+            thrown(IllegalStateException.class)
+    }
     def "isRequiredToMerge, when there are changes"() {
         when:
             util.createASampleCommit('first commit')

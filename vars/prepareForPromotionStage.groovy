@@ -1,4 +1,4 @@
 
-def heelo() {
+def hello() {
     println "Hello here"
 }

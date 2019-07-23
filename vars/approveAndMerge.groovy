@@ -1,8 +1,7 @@
 import org.fourneth.*
 
-void call(Map parameters = [:]) {
-    PromotionRequestConfig config = parameters.config
-    def request = new PromotionRequest(config)
+void call(script, Map parameters = [:]) {
+    def request = new PromotionRequest(script.promotionConfig.config)
 
     request.approve()
 

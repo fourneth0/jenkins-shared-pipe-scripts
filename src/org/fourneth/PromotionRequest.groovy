@@ -107,16 +107,7 @@ class PromotionRequest {
         return this
     }
 
-    def findPullRequest() {
-        def prs = repository.queryPullRequests()
-            .base(target.name)
-            .head(source.name)
-            .list()
-        if (prs.isEmpty()) {
-            throw new IllegalStateException("Couldn't find a pr from ${source.name} to ${target.name} ")
-        }
-        return prs.first()
-    }
+
 
     PromotionRequest merge() {
         this.pullRequest = findPullRequest()
@@ -144,6 +135,17 @@ class PromotionRequest {
 
     Iterable<GHCommitStatus> listBuildStatuses() {
         return repository.listCommitStatuses(this.source.getSHA1())
+    }
+
+    def findPullRequest() {
+        def prs = repository.queryPullRequests()
+                .base(target.name)
+                .head(source.name)
+                .list()
+        if (prs.isEmpty()) {
+            throw new IllegalStateException("Couldn't find a pr from ${source.name} to ${target.name} ")
+        }
+        return prs.first()
     }
 
     private Iterable<GHCommitStatus> getLatestCommitStatus(Iterable<GHCommitStatus> commitStatuses) {

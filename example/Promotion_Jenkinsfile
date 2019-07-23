@@ -28,7 +28,10 @@ pipeline {
         }
         stage('Is version deployed') {
             steps {
-                waitTillApiDeployed(this, [versionURL: 'https://jsonplaceholder.typicode.com/todos/1', ])
+                waitTillApiDeployed(this, [
+                    versionURL: 'https://jsonplaceholder.typicode.com/todos/1',
+                    propertyName: 'id'
+                ])
             }
         }
 

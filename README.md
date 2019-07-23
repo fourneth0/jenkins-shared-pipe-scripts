@@ -10,5 +10,8 @@ Follow the instruction in https://jenkins.io/doc/book/pipeline/shared-libraries/
 
 Refer examples in `example` folder on how to use different utilities in this library 
 
-#TODO
-1. Add documentation 
+#Running Tests
+1. `gradle test` -> runs unit tests
+2. `gradle test =Dtest.profile=integration` will run unit + integration tests. 
+    Expose `ACCESS_TOKEN` and `APPROVE_TOKEN` environment variables to run integration tests in local environment.
+    Refer Jenkinsfile for more details 

@@ -8,12 +8,11 @@ import org.kohsuke.github.GHOrganization
 import org.kohsuke.github.GHPullRequest
 import org.kohsuke.github.GHPullRequestReviewEvent
 import org.kohsuke.github.GHRepository
-import org.kohsuke.github.GHTagObject
 import org.kohsuke.github.GitHub
 
 class PromotionRequest {
 
-    private PromotionRequestConfig config
+    PromotionRequestConfig config
 
     private GitHub client
     private GHOrganization organization
@@ -50,12 +49,11 @@ class PromotionRequest {
      * @param body
      * @return
      */
-    PromotionRequest createPR(String body = "") {
-        println "Running method"
-        println this.isRequiredToMerge()
+    PromotionRequest createPR() {
+        String body = "Auto promotion: Creating PR"
 
         if (!this.isRequiredToMerge()) {
-            throw new IllegalStateException("${target.name} is upto date with ${source.name}")
+            throw new IllegalStateException("{target.name} is upto date with {source.name}")
         }
 
         closeExistingPR()
@@ -75,15 +73,17 @@ class PromotionRequest {
      * @param message
      * @return
      */
-    PromotionRequest approve(String message = "Approve request for auto-promotion") {
+    PromotionRequest approve() {
+        String message = "Auto approving pull request"
         this.pullRequest = findPullRequest()
-        if (!this.pullRequest) {
-            throw new IllegalStateException('Pull request should be created before approving')
-        }
         GHPullRequest pr = GitHub.connectUsingOAuth(this.config.approveToken)
                 .getOrganization(this.repository.ownerName)
                 .getRepository(this.repository.name)
                 .getPullRequest(this.pullRequest.number)
+
+        if (!pr) {
+            throw new IllegalStateException("cannot find the PR to approve")
+        }
 
         pr.createReview()
             .body(message)
@@ -146,7 +146,7 @@ class PromotionRequest {
      * Close any existing PR raised from source to target branch.
      * @return true if closed
      */
-    def boolean closeExistingPR() {
+    boolean closeExistingPR() {
         try {
             def existingPR = findPullRequest()
             existingPR.close()
@@ -174,11 +174,6 @@ class PromotionRequest {
     }
     private def refreshTarget() {
         target = repository.getBranch(this.target.name)
-    }
-
-    GHTagObject createTag(String name, String sha) {
-        this.repository.createRef(name, sha)
-        return this.repository.getTagObject(sha)
     }
 
 }

@@ -62,6 +62,5 @@ dependencies {
     // Use the awesome Spock testing and specification framework
     testImplementation 'org.spockframework:spock-core:1.2-groovy-2.5'
     testImplementation 'org.mockito:mockito-core:2.+'
-    testImplementation 'io.specto:hoverfly-java:+'
 
 }

@@ -5,9 +5,6 @@ import org.fourneth.PromotionRequest
 import org.fourneth.PromotionRequestConfig
 import org.fourneth.integration.util.PromoteTestUtil
 
-//@ClassRule
-//public static HoverflyRule hoverflyRule = HoverflyRule.inCaptureMode("simulation.json");
-
 class PromotionRequestIntegrationTest extends Specification {
 
     def env = System.getenv()
@@ -37,7 +34,7 @@ class PromotionRequestIntegrationTest extends Specification {
             util.closeExistingPRs()
             util.createDuplicatePR()
         when:
-            promotionRequest.createPR("Promotion PR")
+            promotionRequest.createPR()
         then:
             promotionRequest.pullRequest != null
             promotionRequest.pullRequest.base.sha == promotionRequest.target.getSHA1()
@@ -46,25 +43,24 @@ class PromotionRequestIntegrationTest extends Specification {
 
     def "approve"() {
         when:
-            promotionRequest.createPR("Verify approvability")
-            promotionRequest.approve(env['APPROVE_TOKEN'])
+            promotionRequest.createPR()
+            promotionRequest.approve()
         then:
             promotionRequest.pullRequest.listReviews().size() == 1
-            promotionRequest.pullRequest.state == GHIssueState.OPEN
     }
 
     def "merge pr"() {
         setup:
             util.closeExistingPRs()
             util.createDuplicatePR()
-            promotionRequest.createPR("verify merge")
+            promotionRequest.createPR()
             promotionRequest.approve()
             util.waitTillMergeable()
         when:
             promotionRequest.merge()
         then:
             promotionRequest.target.getSHA1() == promotionRequest.pullRequest.mergeCommitSha
-            promotionRequest.pullRequest.state == GHIssueState.CLOSED
+            promotionRequest.isRequiredToMerge() == false
     }
 
 }

@@ -23,9 +23,9 @@ class PromotionRequest {
     private GHPullRequest pullRequest
 
     PromotionRequest (PromotionRequestConfig config) {
-        println("Startng to create")
-        assert config
-        assert config.validate()
+        println("Startng to create ${config.accessToken} ${config.organization}")
+//        assert config
+//        assert config.validate()
         this.config = config
         this.client = GitHub.connectUsingOAuth(config.accessToken)
 //

@@ -3,6 +3,7 @@ pipeline {
     stages {
         stage('Setup') {
             steps {
+                // assume this library is imported to jenkins with name 'branch-promotion'
                 library 'branch-promotion'
                 script {
                     promotionConfig.init([ organization: 'fourneth0',
@@ -34,6 +35,5 @@ pipeline {
                 ])
             }
         }
-
     }
 }

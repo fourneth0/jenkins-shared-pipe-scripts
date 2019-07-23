@@ -23,8 +23,7 @@ class PromotionRequest {
     private GHPullRequest pullRequest
 
     PromotionRequest (PromotionRequestConfig config) {
-        assert config
-        assert config.validate()
+        assert config && config.validate()
         this.config = config
         this.client = GitHub.connectUsingOAuth(config.accessToken)
 

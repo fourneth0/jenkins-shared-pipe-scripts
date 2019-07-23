@@ -16,6 +16,7 @@ class PromotionRequestConfig {
         assertString repository
         assertString source
         assertString target
+        return true
     }
 
     private boolean assertString(param) {

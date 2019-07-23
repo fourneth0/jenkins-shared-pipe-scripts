@@ -122,7 +122,7 @@ class PromotionRequest {
      */
     boolean hasAllStatusPassed() {
         def commitStatuses = listBuildStatuses()
-        if (commitStatuses.isEmpty()) {
+        if (commitStatuses.size() == 0) {
             return false
         }
         def latestStatuses = getLatestCommitStatus(commitStatuses)

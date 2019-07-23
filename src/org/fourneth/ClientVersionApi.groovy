@@ -12,4 +12,8 @@ class ClientVersionApi {
         def result = new JsonSlurper().parse(new URL(url))
         return result[propertyName]
     }
+
+    boolean isThisVersionDeployed(version) {
+        return version.contains(this.version)
+    }
 }

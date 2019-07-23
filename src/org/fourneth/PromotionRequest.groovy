@@ -131,6 +131,10 @@ class PromotionRequest {
         }
     }
 
+    String getSourceVersion() {
+        return this.source.getSHA1()
+    }
+
     Iterable<GHCommitStatus> listBuildStatuses() {
         return repository.listCommitStatuses(this.source.getSHA1())
     }

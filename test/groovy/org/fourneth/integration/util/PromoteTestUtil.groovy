@@ -1,4 +1,4 @@
-package org.fourneth.util
+package org.fourneth.integration.util
 
 import org.fourneth.PromotionRequest
 import org.kohsuke.github.GHCommit
@@ -20,9 +20,10 @@ class PromoteTestUtil {
         return createAPR();
     }
 
-    PromotionRequest closeExistingPRs() {
-        return promotionRequest.closeExistingPRs()
+    def closeExistingPRs() {
+        promotionRequest.closeExistingPR()
     }
+
     GHPullRequest createAPR() {
         String source = promotionRequest.source.name
         String target = promotionRequest.target.name

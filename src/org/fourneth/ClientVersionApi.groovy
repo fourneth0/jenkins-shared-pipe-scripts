@@ -4,16 +4,34 @@ import groovy.json.JsonSlurper
 
 class ClientVersionApi {
 
+    /**
+     * Version API URL. Response should contains json object.
+     */
     String url
+    /**
+     * version property in api response.
+     */
     String propertyName = 'hash'
 
-    // todo documentation
+    /**
+     * Read the version property from the given json API.
+     *
+      * @return value of the given property, or null
+     */
     String getVersion() {
         def result = new JsonSlurper().parse(new URL(url))
         return result[propertyName]
     }
 
-    boolean isThisVersionDeployed(version) {
-        return version.contains(this.version)
+    /**
+     * Check whether the given version and the deployed version from the API matches.
+     *
+     * @param expectedVersion
+     * @return boolean
+     */
+    boolean isThisVersionDeployed(String expectedVersion) {
+        return (expectedVersion != null
+            && this.version != null
+            && expectedVersion.contains(this.version))
     }
 }

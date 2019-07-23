@@ -5,10 +5,9 @@
  * For more details take a look at the Groovy Quickstart chapter in the Gradle
  * User Manual available at https://docs.gradle.org/5.5.1/userguide/tutorial_groovy_projects.html
  */
-
 plugins {
-    // Apply the groovy plugin to add support for Groovy
     id 'groovy'
+    id 'jacoco' // https://docs.gradle.org/current/userguide/jacoco_plugin.html
 }
 
 sourceSets {
@@ -17,21 +16,42 @@ sourceSets {
             srcDirs = ['src']
         }
     }
-
     test {
         groovy {
-            srcDirs = ['test/groovy']
+            srcDirs = ['test/groovy', 'integration-test/groovy']
         }
     }
 }
 
+check.dependsOn jacocoTestCoverageVerification
+check.dependsOn jacocoTestReport
+jacocoTestReport.shouldRunAfter test
+jacocoTestCoverageVerification.shouldRunAfter jacocoTestReport
+
+test {
+    if (System.properties['test.profile'] != 'integration') {
+        exclude '**/*integration*'
+    }
+}
+
 repositories {
-    // Use jcenter for resolving dependencies.
-    // You can declare any Maven/Ivy/file repository here.
     jcenter()
-    // maven {
-    //     url 'https://mvnrepository.com/artifact'
-    // }
+}
+
+jacocoTestReport {
+    reports {
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.5
+            }
+        }
+    }
 }
 
 dependencies {
@@ -42,4 +62,6 @@ dependencies {
     // Use the awesome Spock testing and specification framework
     testImplementation 'org.spockframework:spock-core:1.2-groovy-2.5'
     testImplementation 'org.mockito:mockito-core:2.+'
+    testImplementation 'io.specto:hoverfly-java:+'
+
 }

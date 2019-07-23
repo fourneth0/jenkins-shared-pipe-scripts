@@ -20,5 +20,4 @@ def init(Map params = [:]) {
         }
     }
 
-
 }

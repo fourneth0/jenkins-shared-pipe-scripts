@@ -8,18 +8,6 @@ import spock.lang.Unroll
 
 import static org.mockito.Mockito.*
 
-@Unroll
-class PromotionRequestConstructionTest extends Specification {
-    def "Create with invalid config"() {
-        when:
-            new PromotionRequest(config)
-        then:
-            thrown(PowerAssertionError.class)
-        where:
-            config << [null, new PromotionRequestConfig(source: "s")]
-    }
-}
-
 class HasAllStatusPassedTest extends Specification {
 
     def mockedRequest = mock(PromotionRequest.class)

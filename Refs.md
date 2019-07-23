@@ -8,3 +8,4 @@
 * https://github.com/jenkinsci/pipeline-aws-plugin/tree/master/src/main/java/de/taimos/pipeline/aws
 * http://www.levibotelho.com/development/commit-a-file-with-the-github-api/
 * https://github.com/fabric8io/jenkins-pipeline-library
+* http://wittchen.io/separate-execution-of-unit-and-integration-tests-in-gradle/

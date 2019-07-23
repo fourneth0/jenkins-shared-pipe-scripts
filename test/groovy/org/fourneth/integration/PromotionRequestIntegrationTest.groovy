@@ -1,29 +1,30 @@
-package org.fourneth
+package org.fourneth.integration
 
-import org.fourneth.util.PromoteTestUtil
-import org.kohsuke.github.GHIssueState
 import spock.lang.Specification
+import org.fourneth.PromotionRequest
+import org.fourneth.PromotionRequestConfig
+import org.fourneth.integration.util.PromoteTestUtil
+
+//@ClassRule
+//public static HoverflyRule hoverflyRule = HoverflyRule.inCaptureMode("simulation.json");
 
 class PromotionRequestIntegrationTest extends Specification {
 
     def env = System.getenv()
 
-    def promotionRequest = new PromotionRequest(
-            "fourneth0",
-            "tryjenpipe",
-            "develop",
-            "staging",
-            env['ACCESS_TOKEN'],
-    env['APPROVE_TOKEN'])
+    def config = new PromotionRequestConfig(
+            accessToken: env['ACCESS_TOKEN'],
+            approveToken: env['APPROVE_TOKEN'],
+            organization: "fourneth0",
+            repository: "tryjenpipe",
+            source: "develop",
+            target: "staging",
+    )
+
+    def promotionRequest = new PromotionRequest(config)
 
     def util = new PromoteTestUtil(promotionRequest: promotionRequest)
 
-    def "Missing required params"() {
-        when:
-            new PromotionRequest()
-        then:
-            thrown(IllegalStateException.class)
-    }
     def "isRequiredToMerge, when there are changes"() {
         when:
             util.createASampleCommit('first commit')

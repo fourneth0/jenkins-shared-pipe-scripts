@@ -37,27 +37,12 @@ class PromotionRequest {
      * @return
      */
     boolean isRequiredToMerge() {
-        def comparison = this.repository.getCompare(this.source.name, this.target.name)
+        def comparison = compareBranches()
         return (comparison.status != GHCompare.Status.identical
             && comparison.status != GHCompare.Status.ahead)
     }
 
-    /**
-     * Close any existing PRs raised from source to target branch.
-     * @return
-     */
-    PromotionRequest closeExistingPRs() {
-        def existingPRs = this.repository
-                .queryPullRequests()
-                .base(target.name)
-                .head(source.name)
-                .list()
 
-        for (pr in existingPRs) {
-            pr.close()
-        }
-        return this
-    }
 
     /**
      * Create PR from source to target. Add given body content to the PR.
@@ -66,11 +51,14 @@ class PromotionRequest {
      * @return
      */
     PromotionRequest createPR(String body = "") {
+        println "Running method"
+        println this.isRequiredToMerge()
+
         if (!this.isRequiredToMerge()) {
             throw new IllegalStateException("${target.name} is upto date with ${source.name}")
         }
 
-        closeExistingPRs()
+        closeExistingPR()
 
         this.pullRequest = repository.createPullRequest(
                 "Auto Promotion: ${source.name} -> ${target.name} | ${new Date()}",
@@ -106,7 +94,11 @@ class PromotionRequest {
     }
 
 
-
+    /**
+     * Merge the PR raised from source --> target.
+     * @return
+     * @throws IllegalStateException - if there is no PR
+     */
     PromotionRequest merge() {
         this.pullRequest = findPullRequest()
         this.pullRequest.merge("Promote branch ${source.name} to ${target.name}", this.source.getSHA1())
@@ -139,7 +131,7 @@ class PromotionRequest {
         return repository.listCommitStatuses(this.source.getSHA1())
     }
 
-    def findPullRequest() {
+    GHPullRequest findPullRequest() {
         def prs = repository.queryPullRequests()
                 .base(target.name)
                 .head(source.name)
@@ -148,6 +140,21 @@ class PromotionRequest {
             throw new IllegalStateException("Couldn't find a pr from ${source.name} to ${target.name} ")
         }
         return prs.first()
+    }
+
+    /**
+     * Close any existing PR raised from source to target branch.
+     * @return true if closed
+     */
+    def boolean closeExistingPR() {
+        try {
+            def existingPR = findPullRequest()
+            existingPR.close()
+            return true
+        } catch (IllegalStateException e) {
+            return false
+        }
+
     }
 
     private Iterable<GHCommitStatus> getLatestCommitStatus(Iterable<GHCommitStatus> commitStatuses) {
@@ -162,6 +169,9 @@ class PromotionRequest {
         }
     }
 
+    GHCompare compareBranches() {
+        return this.repository.getCompare(this.source.name, this.target.name)
+    }
     private def refreshTarget() {
         target = repository.getBranch(this.target.name)
     }

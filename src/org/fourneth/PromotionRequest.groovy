@@ -24,12 +24,12 @@ class PromotionRequest {
 
     PromotionRequest (PromotionRequestConfig config) {
         println("Startng to create")
-//        assert config
-//        assert config.validate()
-//        this.config = config
-//        this.client = GitHub.connectUsingOAuth(config.accessToken)
+        assert config
+        assert config.validate()
+        this.config = config
+        this.client = GitHub.connectUsingOAuth(config.accessToken)
 //
-//        this.organization = this.client.getOrganization(config.organization)
+        this.organization = this.client.getOrganization(config.organization)
 //        this.repository = this.organization.getRepository(config.repository)
 //        this.source = this.repository.getBranch(config.source)
 //        this.target = this.repository.getBranch(config.target)

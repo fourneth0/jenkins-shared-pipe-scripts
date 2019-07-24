@@ -19,17 +19,17 @@ pipeline {
         }
         stage('Create PR') {
             steps {
-                createPR(this)
+                createPRStep(this)
             }
         }
         stage('Approve & Merge PR') {
             steps {
-                approveAndMerge(this)
+                approveAndMergeStep(this)
             }
         }
         stage('Is version deployed') {
             steps {
-                waitTillApiDeployed(this, [
+                waitTillApiDeployedStep(this, [
                     versionURL: 'https://jsonplaceholder.typicode.com/todos/1',
                     propertyName: 'id'
                 ])

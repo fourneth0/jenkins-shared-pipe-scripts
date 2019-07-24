@@ -6,6 +6,13 @@ import org.fourneth.PromotionRequestConfig
 /**
  * This step will create PromotionRequestConfig object and hold onto it.
  * Rest of the steps can access the configuration as `promotionConfig.config`.
+ * Required params are:
+ *  accessTokenId  - a credentialId to access github account.  This credentialId should be configured with jenkins.
+ *  approveTokenId - a credentialId to approve github account. This credentialId should be configured with jenkins.
+ *  organization   - github organization name
+ *  repository     - repository name
+ *  source         - source branch from which the PR should initiate
+ *  target         - target branch to which the PR should destine
  *
  * @param params
  * @return

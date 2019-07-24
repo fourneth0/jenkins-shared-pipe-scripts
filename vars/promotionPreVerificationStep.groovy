@@ -9,6 +9,6 @@ import org.fourneth.*
 void call(script) {
     def request = new PromotionRequest(script.promotionConfig.config)
     if (!request.isRequiredToMerge()) {
-        script.currentBuild.result = 'ABORTED'
+        script.currentBuild.result = 'UNSTABLE'
     }
 }

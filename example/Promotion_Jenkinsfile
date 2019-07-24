@@ -20,6 +20,11 @@ pipeline {
 
             }
         }
+        stage('Pre-Verification') {
+            steps {
+                promotionPreVerificationStep(this)
+            }
+        }
         stage('Create PR') {
             steps {
                 createPRStep(this)

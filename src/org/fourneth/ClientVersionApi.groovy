@@ -2,6 +2,10 @@ package org.fourneth
 
 import groovy.json.JsonSlurper
 
+/**
+ * This is a wrapper around version api of subjected client.
+ * This is being used to check whether the expected version is indeed deployed.
+ */
 class ClientVersionApi {
 
     /**

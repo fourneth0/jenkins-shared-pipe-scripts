@@ -10,6 +10,9 @@ import org.kohsuke.github.GHPullRequestReviewEvent
 import org.kohsuke.github.GHRepository
 import org.kohsuke.github.GitHub
 
+/**
+ * This is a wrapper around github client to extract the necessary functionalities
+ */
 class PromotionRequest {
 
     PromotionRequestConfig config
